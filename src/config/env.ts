@@ -22,10 +22,10 @@ export const envSchema = z
       .min(1, 'REFRESH_TOKEN_EXPIRES is required')
       .transform((val) => Number(val)),
 
-    CSRF_TOKEN_SECRET: z.string().min(1, 'CSRF_TOKEN_SECRET is required'),
-    CSRF_TOKEN_EXPIRES: z
+    ACCESS_TOKEN_SECRET: z.string().min(1, 'ACCESS_TOKEN_SECRET is required'),
+    ACCESS_TOKEN_EXPIRES: z
       .string()
-      .min(1, 'CSRF_TOKEN_EXPIRES is required')
+      .min(1, 'ACCESS_TOKEN_EXPIRES is required')
       .transform((val) => Number(val)),
   })
   .loose();
