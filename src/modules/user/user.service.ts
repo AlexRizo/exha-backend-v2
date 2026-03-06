@@ -66,7 +66,7 @@ export class UserService {
     return user;
   }
 
-  async updateRefreshToken(id: string, refreshToken: string) {
+  async updateRefreshToken(id: string, refreshToken: string | null) {
     await this.findOne(id);
 
     await this.prismaService.user.update({

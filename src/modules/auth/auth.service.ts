@@ -48,6 +48,14 @@ export class AuthService {
     return user;
   }
 
+  async logout(res: Response, userId: string) {
+    await this.userService.updateRefreshToken(userId, null);
+
+    res.clearCookie('access_token', { path: '/' });
+    res.clearCookie('refresh_token', { path: '/' });
+    res.clearCookie('XSRF-TOKEN', { path: '/' });
+  }
+
   async refresh(res: Response, userId: string, presentedRefreshToken: string) {
     const user = await this.userService.findOne(userId);
 
