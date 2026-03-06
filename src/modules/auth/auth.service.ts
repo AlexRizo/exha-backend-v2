@@ -80,7 +80,7 @@ export class AuthService {
   }
 
   async validateUser(email: string, password: string) {
-    const user = await this.userService.findOne(email);
+    const user = await this.userService.findByEmail(email);
 
     const validPass = compareSync(password, user.password);
 
