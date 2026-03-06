@@ -8,7 +8,7 @@ import {
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from '../prisma/prisma.service';
-import { isEmail, isUUID } from 'class-validator';
+import { isUUID } from 'class-validator';
 import { Prisma } from '@prisma/client';
 import { hashSync } from 'bcrypt';
 
@@ -50,11 +50,7 @@ export class UserService {
   }
 
   async findOne(term: string) {
-    const where = isUUID(term)
-      ? { id: term }
-      : isEmail(term)
-        ? { email: term }
-        : { username: term };
+    const where = isUUID(term) ? { id: term } : { username: term };
 
     const user = await this.prismaService.user.findUnique({ where });
 
