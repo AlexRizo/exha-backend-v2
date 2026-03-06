@@ -1,0 +1,131 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Roles {
+  admin
+  manager
+  applicant
+  student
+}
+
+model User {
+  id           String    @id @default(uuid())
+  first_name   String
+  last_name    String
+  username     String    @unique
+  email        String    @unique
+  password     String
+  role         Roles     @default(applicant)
+  refreshToken String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  isActive     Boolean   @default(true)
+  last_login   DateTime?
+}
+
+model Exam {
+  id           String        @id @default(uuid())
+  title        String
+  description  String?
+  code         String        @unique
+  isActive     Boolean       @default(true)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  applications Application[]
+  topics       Topic[]
+  groups       Group[]
+  Question     Question[]
+}
+
+model Application {
+  id         String   @id @default(uuid())
+  examId     String
+  exam       Exam     @relation(fields: [examId], references: [id], onDelete: Restrict)
+  scheduleAt DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Topic {
+  id        String     @id @default(uuid())
+  title     String
+  order     Int        @default(0)
+  code      String     @unique
+  examId    String
+  exam      Exam       @relation(fields: [examId], references: [id], onDelete: Cascade)
+  isActive  Boolean    @default(true)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  questions Question[]
+  groups    Group[]
+}
+
+enum QuestionType {
+  singleChoice
+  multipleChoice
+  dragNDrop
+  match
+}
+
+model Question {
+  id          String       @id @default(uuid())
+  text        String
+  type        QuestionType
+  code        String       @unique
+  resourceUrl String?
+  options     Option[]
+  isActive    Boolean      @default(true)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  topicId     String?
+  topic       Topic?       @relation(fields: [topicId], references: [id], onDelete: SetNull)
+  groupId     String?
+  group       Group?       @relation(fields: [groupId], references: [id], onDelete: SetNull)
+  examId      String
+  exam        Exam         @relation(fields: [examId], references: [id], onDelete: Cascade)
+}
+
+model Group {
+  id          String     @id @default(uuid())
+  name        String
+  code        String     @unique
+  topicId     String?
+  topic       Topic?     @relation(fields: [topicId], references: [id], onDelete: SetNull)
+  examId      String?
+  exam        Exam?      @relation(fields: [examId], references: [id], onDelete: SetNull)
+  content     String?
+  resourceUrl String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  questions   Question[]
+}
+
+enum Letter {
+  a
+  b
+  c
+  d
+}
+
+model Option {
+  id         String   @id @default(uuid())
+  letter     Letter
+  text       String?
+  imageUrl   String?
+  isCorrect  Boolean
+  questionId String
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
