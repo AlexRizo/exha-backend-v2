@@ -19,14 +19,10 @@ export const envSchema = z
     REFRESH_TOKEN_SECRET: z.string().min(1, 'REFRESH_TOKEN_SECRET is required'),
     REFRESH_TOKEN_EXPIRES: z
       .string()
-      .min(1, 'REFRESH_TOKEN_EXPIRES is required')
-      .transform((val) => Number(val)),
+      .min(1, 'REFRESH_TOKEN_EXPIRES is required'),
 
     ACCESS_TOKEN_SECRET: z.string().min(1, 'ACCESS_TOKEN_SECRET is required'),
-    ACCESS_TOKEN_EXPIRES: z
-      .string()
-      .min(1, 'ACCESS_TOKEN_EXPIRES is required')
-      .transform((val) => Number(val)),
+    ACCESS_TOKEN_EXPIRES: z.string().min(1, 'ACCESS_TOKEN_EXPIRES is required'),
   })
   .loose();
 type EnvType = z.infer<typeof envSchema>;

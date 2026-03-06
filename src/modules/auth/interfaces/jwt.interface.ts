@@ -9,3 +9,10 @@ export interface UserPayload {
   iat?: string;
   exp?: string;
 }
+
+export interface AuthUser {
+  id: string;
+  email: string;
+  username: string;
+  role: Role;
+}

@@ -59,12 +59,26 @@ export class UserService {
     return user;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async updateRefreshToken(id: string, refreshToken: string) {
+    await this.findOne(id);
+
+    await this.prismaService.user.update({
+      where: { id },
+      data: { refreshToken },
+    });
+
+    return true;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async setLastLogin(id: string) {
+    await this.findOne(id);
+
+    await this.prismaService.user.update({
+      where: { id },
+      data: { last_login: new Date() },
+    });
+
+    return true;
   }
 
   private handleDuplicateError(error: unknown) {
