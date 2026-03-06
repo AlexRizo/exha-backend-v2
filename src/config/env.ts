@@ -27,14 +27,6 @@ export const envSchema = z
       .string()
       .min(1, 'CSRF_TOKEN_EXPIRES is required')
       .transform((val) => Number(val)),
-
-    SESSION_SECRET: z.string().min(1, 'SESSION_SECRET is required'),
-    SESSION_EXPIRES: z
-      .string()
-      .min(1, 'SESSION_EXPIRES is required')
-      .transform((val) => Number(val)),
-
-    REDIS_URL: z.string().min(1, 'REDIS_URL is required'),
   })
   .loose();
 type EnvType = z.infer<typeof envSchema>;
