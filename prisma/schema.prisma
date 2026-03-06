@@ -12,7 +12,7 @@ datasource db {
   provider = "postgresql"
 }
 
-enum Roles {
+enum Role {
   admin
   manager
   applicant
@@ -26,7 +26,7 @@ model User {
   username     String    @unique
   email        String    @unique
   password     String
-  role         Roles     @default(applicant)
+  role         Role      @default(applicant)
   refreshToken String?
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
