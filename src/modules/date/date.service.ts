@@ -1,10 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateDateDto } from './dto/create-date.dto';
+import { ExamService } from '../exam/exam.service';
 
 @Injectable()
 export class DateService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly examService: ExamService,
+  ) {}
 
   async findOne(id: string) {
     const date = await this.prismaService.date.findUnique({
@@ -49,6 +53,8 @@ export class DateService {
   }
 
   async create(createDateDto: CreateDateDto) {
+    await this.examService.findOne(createDateDto.examId);
+
     const date = await this.prismaService.date.create({
       data: createDateDto,
     });
