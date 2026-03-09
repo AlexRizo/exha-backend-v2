@@ -35,20 +35,20 @@ model User {
 }
 
 model Exam {
-  id           String        @id @default(uuid())
-  title        String
-  description  String?
-  code         String        @unique
-  isActive     Boolean       @default(true)
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-  applications Application[]
-  topics       Topic[]
-  groups       Group[]
-  Question     Question[]
+  id          String     @id @default(uuid())
+  title       String
+  description String?
+  code        String     @unique
+  isActive    Boolean    @default(true)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  dates       Date[]
+  topics      Topic[]
+  groups      Group[]
+  Question    Question[]
 }
 
-model Application {
+model Date {
   id         String   @id @default(uuid())
   examId     String
   exam       Exam     @relation(fields: [examId], references: [id], onDelete: Restrict)
