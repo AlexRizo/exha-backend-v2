@@ -13,6 +13,10 @@ import { CreateQuestionDto } from './dto/create-question.dto';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { sanitizeFileName, setDestination } from './helpers/questionFiles';
+import {
+  type FileFieldsPayload,
+  ParseFileFieldsPipe,
+} from './pipes/parse-file-fields.pipe';
 
 @Controller('question')
 export class QuestionController {
@@ -45,11 +49,14 @@ export class QuestionController {
   )
   create(
     @Body() createQuestionDto: CreateQuestionDto,
-    @UploadedFiles()
-    files: {
-      questionFile: Express.Multer.File;
-      optionFile: Express.Multer.File;
-    },
+    @UploadedFiles(
+      new ParseFileFieldsPipe({
+        fields: ['questionFile', 'optionFile'],
+        isRequired: false,
+        maxSize: 5,
+      }),
+    )
+    files: FileFieldsPayload,
   ) {
     return this.questionService.create(createQuestionDto, files);
   }

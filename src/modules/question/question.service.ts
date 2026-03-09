@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateQuestionDto } from './dto/create-question.dto';
+import { FileFieldsPayload } from './pipes/parse-file-fields.pipe';
 
 @Injectable()
 export class QuestionService {
@@ -26,5 +27,5 @@ export class QuestionService {
     return questions;
   }
 
-  async create(questionDto: CreateQuestionDto, files: any) {}
+  async create(questionDto: CreateQuestionDto, files: FileFieldsPayload) {}
 }
