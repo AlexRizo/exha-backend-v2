@@ -8,5 +8,6 @@ import { TopicModule } from '../topic/topic.module';
   controllers: [ExamController],
   providers: [ExamService, PrismaService],
   imports: [TopicModule],
+  exports: [ExamService],
 })
 export class ExamModule {}
