@@ -7,10 +7,14 @@ import { PrismaService } from '../prisma/prisma.service';
 import { CreateExamDto } from './dto/create-exam.dto';
 import { nanoid } from 'nanoid';
 import { isUUID } from 'class-validator';
+import { TopicService } from '../topic/topic.service';
 
 @Injectable()
 export class ExamService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly topicService: TopicService,
+  ) {}
 
   async createExam(createExamDto: CreateExamDto) {
     const code = nanoid(6);
@@ -58,5 +62,9 @@ export class ExamService {
     }
 
     return exam;
+  }
+
+  async findExamTopics(examId: string) {
+    return this.topicService.findManyByExam(examId);
   }
 }
