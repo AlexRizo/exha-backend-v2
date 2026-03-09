@@ -5,6 +5,7 @@ import { UserModule } from './modules/user/user.module';
 import { ExamModule } from './modules/exam/exam.module';
 import { TopicModule } from './modules/topic/topic.module';
 import { DateModule } from './modules/date/date.module';
+import { QuestionModule } from './modules/question/question.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { DateModule } from './modules/date/date.module';
     ExamModule,
     TopicModule,
     DateModule,
+    QuestionModule,
   ],
 })
 export class AppModule {}
