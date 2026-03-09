@@ -1,8 +1,13 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { isUUID } from 'class-validator';
 import { CreateTopicDto } from './dto/create-topic.dto';
 import { nanoid } from 'nanoid';
+import { normalizeString } from 'src/common/normalizeString';
 
 @Injectable()
 export class TopicService {
@@ -44,7 +49,18 @@ export class TopicService {
 
   async create(topicDto: CreateTopicDto) {
     const code = nanoid(6);
-    const topicCode = 
+    const topicCode = `${normalizeString(topicDto.title).toUpperCase()}-${code}`;
+
+    const topicExist = await this.findOne(topicCode);
+
+    if (topicExist) throw new ConflictException('El tópico ya existe');
+
+    const topic = await this.prismaService.topic.create({
+      data: {
+        ...topicDto,
+        code: topicCode,
+      },
+    });
 
     return topic;
   }
