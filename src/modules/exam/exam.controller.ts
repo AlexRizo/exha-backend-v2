@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ExamService } from './exam.service';
 import { Auth } from '../auth/decorators/auth.decorator';
 import { CreateExamDto } from './dto/create-exam.dto';
@@ -14,5 +14,15 @@ export class ExamController {
   @Post()
   createExam(@Body() createExamDto: CreateExamDto) {
     return this.examService.createExam(createExamDto);
+  }
+
+  @Get()
+  findAll() {
+    return this.examService.findAll();
+  }
+
+  @Get(':term')
+  findOne(@Param('term') term: string) {
+    return this.examService.findOne(term);
   }
 }
