@@ -3,7 +3,6 @@ import {
   Controller,
   Get,
   Param,
-  ParseDatePipe,
   ParseUUIDPipe,
   Post,
   Query,
@@ -11,6 +10,7 @@ import {
 import { DateService } from './date.service';
 import { Auth } from '../auth/decorators/auth.decorator';
 import { CreateDateDto } from './dto/create-date.dto';
+import { RangeDateDto } from './dto/range-date.dto';
 
 @Auth()
 @Controller('date')
@@ -28,10 +28,7 @@ export class DateController {
   }
 
   @Get('date')
-  findByDate(
-    @Query('startDate', ParseDatePipe) startDate: Date,
-    @Query('endDate', ParseDatePipe) endDate: Date,
-  ) {
+  findByDate(@Query() { startDate, endDate }: RangeDateDto) {
     return this.dateService.findByDate(startDate, endDate);
   }
 
