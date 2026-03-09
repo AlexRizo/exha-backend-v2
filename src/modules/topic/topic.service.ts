@@ -1,5 +1,7 @@
 import {
   ConflictException,
+  forwardRef,
+  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -14,6 +16,8 @@ import { ExamService } from '../exam/exam.service';
 export class TopicService {
   constructor(
     private readonly prismaService: PrismaService,
+
+    @Inject(forwardRef(() => ExamService))
     private readonly examService: ExamService,
   ) {}
 

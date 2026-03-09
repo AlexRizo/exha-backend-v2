@@ -7,6 +7,13 @@ import { TopicModule } from './modules/topic/topic.module';
 import { DateModule } from './modules/date/date.module';
 
 @Module({
-  imports: [PrismaModule, AuthModule, UserModule, ExamModule, TopicModule, DateModule],
+  imports: [
+    PrismaModule,
+    AuthModule,
+    UserModule,
+    ExamModule,
+    TopicModule,
+    DateModule,
+  ],
 })
 export class AppModule {}
