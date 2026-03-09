@@ -35,17 +35,15 @@ model User {
 }
 
 model Exam {
-  id          String     @id @default(uuid())
+  id          String   @id @default(uuid())
   title       String
   description String?
-  code        String     @unique
-  isActive    Boolean    @default(true)
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  code        String   @unique
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
   dates       Date[]
   topics      Topic[]
-  groups      Group[]
-  Question    Question[]
 }
 
 model Date {
@@ -88,12 +86,10 @@ model Question {
   isActive    Boolean      @default(true)
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
-  topicId     String?
-  topic       Topic?       @relation(fields: [topicId], references: [id], onDelete: SetNull)
+  topicId     String
+  topic       Topic        @relation(fields: [topicId], references: [id], onDelete: Cascade)
   groupId     String?
   group       Group?       @relation(fields: [groupId], references: [id], onDelete: SetNull)
-  examId      String
-  exam        Exam         @relation(fields: [examId], references: [id], onDelete: Cascade)
 }
 
 model Group {
@@ -101,9 +97,7 @@ model Group {
   name        String
   code        String     @unique
   topicId     String?
-  topic       Topic?     @relation(fields: [topicId], references: [id], onDelete: SetNull)
-  examId      String?
-  exam        Exam?      @relation(fields: [examId], references: [id], onDelete: SetNull)
+  topic       Topic?     @relation(fields: [topicId], references: [id], onDelete: Cascade)
   content     String?
   resourceUrl String?
   createdAt   DateTime   @default(now())
