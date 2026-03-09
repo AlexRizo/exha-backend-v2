@@ -10,12 +10,6 @@ import { Role } from '@prisma/client';
 export class ExamController {
   constructor(private readonly examService: ExamService) {}
 
-  @AllowedRole(Role.admin)
-  @Post()
-  createExam(@Body() createExamDto: CreateExamDto) {
-    return this.examService.createExam(createExamDto);
-  }
-
   @Get()
   findAll() {
     return this.examService.findAll();
@@ -24,5 +18,11 @@ export class ExamController {
   @Get(':term')
   findOne(@Param('term') term: string) {
     return this.examService.findOne(term);
+  }
+
+  @AllowedRole(Role.admin)
+  @Post()
+  createExam(@Body() createExamDto: CreateExamDto) {
+    return this.examService.createExam(createExamDto);
   }
 }
