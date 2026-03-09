@@ -27,12 +27,9 @@ export class DateService {
     return dates;
   }
 
-  async findByDate(date: string) {
-    const start = new Date(date);
-    start.setUTCHours(0, 0, 0, 0);
-
-    const end = new Date(date);
-    end.setUTCHours(23, 59, 59, 999);
+  async findByDate(startDate: Date, endDate: Date) {
+    const start = startDate.setUTCHours(0, 0, 0, 0);
+    const end = endDate.setUTCHours(23, 59, 59, 999);
 
     const dates = await this.prismaService.date.findMany({
       where: {
@@ -50,23 +47,23 @@ export class DateService {
     return dates;
   }
 
-  async findByDateRange(dates: string[]) {
-    const findDates = await this.prismaService.date.findMany({
-      where: {
-        scheduleAt: {
-          gte: dates[0],
-          lte: dates[1],
-        },
-      },
-      orderBy: {
-        scheduleAt: 'asc',
-      },
-    });
+  // async findByDateRange(dates: string[]) {
+  //   const findDates = await this.prismaService.date.findMany({
+  //     where: {
+  //       scheduleAt: {
+  //         gte: dates[0],
+  //         lte: dates[1],
+  //       },
+  //     },
+  //     orderBy: {
+  //       scheduleAt: 'asc',
+  //     },
+  //   });
 
-    if (!findDates || !findDates.length) {
-      throw new NotFoundException('No se encontraron aplicaciones');
-    }
+  //   if (!findDates || !findDates.length) {
+  //     throw new NotFoundException('No se encontraron aplicaciones');
+  //   }
 
-    return findDates;
-  }
+  //   return findDates;
+  // }
 }
