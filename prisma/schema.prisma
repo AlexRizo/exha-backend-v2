@@ -78,7 +78,7 @@ enum QuestionType {
 
 model Question {
   id          String       @id @default(uuid())
-  text        String
+  content     String
   type        QuestionType
   code        String       @unique
   resourceUrl String?
