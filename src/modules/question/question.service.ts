@@ -26,5 +26,5 @@ export class QuestionService {
     return questions;
   }
 
-  async create(questionDto: CreateQuestionDto) {}
+  async create(questionDto: CreateQuestionDto, files: any) {}
 }
