@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { CreateDateDto } from './dto/create-date.dto';
 
 @Injectable()
 export class DateService {
@@ -47,23 +48,11 @@ export class DateService {
     return dates;
   }
 
-  // async findByDateRange(dates: string[]) {
-  //   const findDates = await this.prismaService.date.findMany({
-  //     where: {
-  //       scheduleAt: {
-  //         gte: dates[0],
-  //         lte: dates[1],
-  //       },
-  //     },
-  //     orderBy: {
-  //       scheduleAt: 'asc',
-  //     },
-  //   });
+  async create(createDateDto: CreateDateDto) {
+    const date = await this.prismaService.date.create({
+      data: createDateDto,
+    });
 
-  //   if (!findDates || !findDates.length) {
-  //     throw new NotFoundException('No se encontraron aplicaciones');
-  //   }
-
-  //   return findDates;
-  // }
+    return date;
+  }
 }
