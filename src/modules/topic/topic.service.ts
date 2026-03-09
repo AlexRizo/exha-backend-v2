@@ -1,6 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { isUUID } from 'class-validator';
+import { CreateTopicDto } from './dto/create-topic.dto';
+import { nanoid } from 'nanoid';
 
 @Injectable()
 export class TopicService {
@@ -38,5 +40,12 @@ export class TopicService {
     }
 
     return topics;
+  }
+
+  async create(topicDto: CreateTopicDto) {
+    const code = nanoid(6);
+    const topicCode = 
+
+    return topic;
   }
 }
