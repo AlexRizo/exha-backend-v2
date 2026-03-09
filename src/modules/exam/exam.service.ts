@@ -1,7 +1,12 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateExamDto } from './dto/create-exam.dto';
 import { nanoid } from 'nanoid';
+import { isUUID } from 'class-validator';
 
 @Injectable()
 export class ExamService {
@@ -27,6 +32,30 @@ export class ExamService {
         code: examCode,
       },
     });
+
+    return exam;
+  }
+
+  async findAll() {
+    const exams = await this.prisma.exam.findMany();
+
+    if (!exams || !exams.length) {
+      throw new NotFoundException('No se encontraron examenes');
+    }
+
+    return exams;
+  }
+
+  async findOne(term: string) {
+    const where = isUUID(term) ? { id: term } : { code: term };
+
+    const exam = await this.prisma.exam.findUnique({
+      where,
+    });
+
+    if (!exam) {
+      throw new NotFoundException('No se encontro el examen');
+    }
 
     return exam;
   }
