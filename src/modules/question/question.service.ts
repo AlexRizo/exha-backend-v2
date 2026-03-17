@@ -10,6 +10,11 @@ export class QuestionService {
   async findOne(id: string) {
     const question = await this.prismaService.question.findUnique({
       where: { id },
+      include: {
+        options: true,
+        group: true,
+        topic: true,
+      },
     });
 
     if (!question) throw new NotFoundException('No se encontró la pregunta');
@@ -18,7 +23,13 @@ export class QuestionService {
   }
 
   async findAll() {
-    const questions = await this.prismaService.question.findMany();
+    const questions = await this.prismaService.question.findMany({
+      include: {
+        options: true,
+        group: true,
+        topic: true,
+      },
+    });
 
     if (!questions || !questions.length) {
       throw new NotFoundException('No se encontraron preguntas');
