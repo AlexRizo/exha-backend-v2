@@ -47,12 +47,12 @@ export class QuestionService {
     const question = await this.prismaService.question.create({
       data: {
         ...questionDto,
-        code: 'test',
+        code: 'test-2',
       },
     });
 
     const createdOptions = await this.prismaService.option.createMany({
-      data: options.map((option) => ({
+      data: (options ?? []).map((option) => ({
         ...option,
         questionId: question.id,
       })),
