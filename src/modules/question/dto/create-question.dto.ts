@@ -1,6 +1,9 @@
 import { Letter, QuestionType } from '@prisma/client';
 import { Type } from 'class-transformer';
 import {
+  ArrayMaxSize,
+  ArrayMinSize,
+  ArrayNotEmpty,
   IsArray,
   IsBoolean,
   IsEnum,
@@ -20,6 +23,9 @@ export class CreateQuestionDto {
   type: QuestionType;
 
   @IsArray()
+  @ArrayNotEmpty()
+  @ArrayMaxSize(4)
+  @ArrayMinSize(2)
   @ValidateNested({ each: true })
   @Type(() => QuestionOption)
   options: QuestionOption[];
