@@ -7,6 +7,8 @@ services:
     build: ./
     volumes:
       - ./src:/usr/src/app/src
+      - ./static:/usr/src/app/static
+      - /usr/src/app/node_modules
     ports:
       - '8080:8080'
     command: sh -c "npx prisma db push && npx prisma generate && pnpm start:dev"

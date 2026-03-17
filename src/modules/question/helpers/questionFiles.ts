@@ -22,5 +22,8 @@ export const sanitizeFileName = (
   callback: (error: Error | null, destination: string) => void,
 ) => {
   const uniqueSuffix = nanoid(10);
-  callback(null, `${normalizeString(file.originalname)}-${uniqueSuffix}`);
+
+  const [name, ext] = file.originalname.split('.');
+
+  callback(null, `${normalizeString(name)}-${uniqueSuffix}.${ext}`);
 };
