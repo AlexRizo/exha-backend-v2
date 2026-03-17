@@ -61,7 +61,9 @@ export class TopicService {
     const code = nanoid(6);
     const topicCode = `${normalizeString(topicDto.title).toUpperCase()}-${code}`;
 
-    const topicExist = await this.findOne(topicCode);
+    const topicExist = await this.prismaService.topic.findUnique({
+      where: { code: topicCode },
+    });
 
     if (topicExist) throw new ConflictException('El tópico ya existe');
 
