@@ -48,7 +48,10 @@ export class UserService {
     if (student) rolesToFind.push(Role.student);
 
     const users = await this.prismaService.user.findMany({
-      where: { role: rolesToFind.length ? { in: rolesToFind } : undefined },
+      where: {
+        role: rolesToFind.length ? { in: rolesToFind } : undefined,
+        isDeleted: false,
+      },
     });
 
     if (!users || !users.length) {
@@ -120,10 +123,15 @@ export class UserService {
       error instanceof Prisma.PrismaClientKnownRequestError &&
       error.code === 'P2002'
     ) {
-      const target = (error.meta?.target ?? []) as string[];
+      const meta = error.meta;
+      const target = (meta?.target as string[]) || [];
 
-      const field =
-        target[0] === 'email' ? 'correo electrónico' : 'nombre de usuario';
+      let field = 'campo';
+
+      if (target.includes('email')) field = 'correo electrónico';
+      else if (target.includes('username')) field = 'nombre de usuario';
+      else if (JSON.stringify(meta).includes('email'))
+        field = 'correo electrónico';
 
       throw new ConflictException(`El ${field} ya existe`);
     }
