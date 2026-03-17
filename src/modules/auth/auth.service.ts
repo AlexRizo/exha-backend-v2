@@ -48,6 +48,23 @@ export class AuthService {
     return user;
   }
 
+  async checkAuth(userId: string) {
+    const user = await this.userService.findOne(userId);
+
+    if (!user || !user.isActive) {
+      throw new UnauthorizedException('Acceso denegado');
+    }
+
+    return {
+      id: user.id,
+      email: user.email,
+      role: user.role,
+      username: user.username,
+      first_name: user.first_name,
+      last_name: user.last_name,
+    };
+  }
+
   async logout(res: Response, userId: string) {
     await this.userService.updateRefreshToken(userId, null);
 

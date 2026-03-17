@@ -1,4 +1,4 @@
-import { Controller, Post, UseGuards, Res, Req } from '@nestjs/common';
+import { Controller, Post, UseGuards, Res, Req, Get } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
 import type { Request, Response } from 'express';
@@ -15,6 +15,12 @@ export class AuthController {
   @Post('login')
   login(@Res({ passthrough: true }) res: Response, @Req() req: Request) {
     return this.authService.login(res, req);
+  }
+
+  @Auth()
+  @Get('me')
+  checkAuth(@GetUser('id') id: string) {
+    return this.authService.checkAuth(id);
   }
 
   @Auth()
