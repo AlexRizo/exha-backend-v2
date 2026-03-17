@@ -11,6 +11,7 @@ import { isUUID } from 'class-validator';
 import { Prisma, Role } from '@prisma/client';
 import { hashSync } from 'bcrypt';
 import { UserRoleDto } from './dto/user-role.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UserService {
@@ -101,6 +102,25 @@ export class UserService {
     });
 
     return true;
+  }
+
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    try {
+      await this.findOne(id);
+
+      if (updateUserDto.password) {
+        updateUserDto.password = hashSync(updateUserDto.password, 10);
+      }
+
+      await this.prismaService.user.update({
+        where: { id },
+        data: updateUserDto,
+      });
+
+      return true;
+    } catch (error) {
+      this.handleDuplicateError(error);
+    }
   }
 
   async remove(id: string) {
