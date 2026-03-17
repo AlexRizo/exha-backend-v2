@@ -57,6 +57,8 @@ export class QuestionService {
       data: (options ?? []).map((option) => ({
         ...option,
         questionId: question.id,
+        // TODO: generate code pending;
+        resourceUrl: optionFile?.[0].path,
       })),
     });
 
