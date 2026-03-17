@@ -27,10 +27,11 @@ export class QuestionService {
     return questions;
   }
 
-  async create(questionDto: CreateQuestionDto, files: FileFieldsPayload) {
+  async create(
+    { options, ...questionDto }: CreateQuestionDto,
+    files: FileFieldsPayload,
+  ) {
     const { questionFile, optionFile } = files;
-
-    const options = questionDto.options;
 
     const question = await this.prismaService.question.create({
       data: {
@@ -39,6 +40,15 @@ export class QuestionService {
       },
     });
 
-    return question;
+    const createdOptions = await this.prismaService.option.createMany({
+      data: options.map((option) => ({
+        ...option,
+        questionId: question.id,
+      })),
+    });
+
+    console.log({ questionFile, optionFile });
+
+    return { question, createdOptions };
   }
 }
