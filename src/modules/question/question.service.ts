@@ -27,5 +27,18 @@ export class QuestionService {
     return questions;
   }
 
-  async create(questionDto: CreateQuestionDto, files: FileFieldsPayload) {}
+  async create(questionDto: CreateQuestionDto, files: FileFieldsPayload) {
+    const { questionFile, optionFile } = files;
+
+    const options = questionDto.options;
+
+    const question = await this.prismaService.question.create({
+      data: {
+        ...questionDto,
+        code: 'test',
+      },
+    });
+
+    return question;
+  }
 }

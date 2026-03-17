@@ -115,7 +115,7 @@ enum Letter {
 model Option {
   id         String   @id @default(uuid())
   letter     Letter
-  text       String?
+  content    String?
   imageUrl   String?
   isCorrect  Boolean
   questionId String
