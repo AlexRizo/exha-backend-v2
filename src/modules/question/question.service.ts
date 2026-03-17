@@ -47,6 +47,7 @@ export class QuestionService {
     const question = await this.prismaService.question.create({
       data: {
         ...questionDto,
+        // TODO: generate code pending;
         code: 'test-2',
       },
     });
