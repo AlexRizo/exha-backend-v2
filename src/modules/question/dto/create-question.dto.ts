@@ -23,10 +23,12 @@ export class CreateQuestionDto {
   type: QuestionType;
 
   @IsArray()
-  @IsOptional()
+  @ArrayNotEmpty()
+  @ArrayMaxSize(4)
+  @ArrayMinSize(2)
   @ValidateNested({ each: true })
   @Type(() => QuestionOption)
-  options?: QuestionOption[];
+  options: QuestionOption[];
 
   @IsUUID()
   topicId: string;
