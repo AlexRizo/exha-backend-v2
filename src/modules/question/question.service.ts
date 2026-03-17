@@ -48,6 +48,7 @@ export class QuestionService {
       data: {
         ...questionDto,
         // TODO: generate code pending;
+        resourceUrl: questionFile?.[0].path,
         code: 'test-2',
       },
     });
