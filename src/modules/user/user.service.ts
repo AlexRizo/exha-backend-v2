@@ -61,7 +61,9 @@ export class UserService {
   async findOne(term: string) {
     const where = isUUID(term) ? { id: term } : { username: term };
 
-    const user = await this.prismaService.user.findUnique({ where });
+    const user = await this.prismaService.user.findUnique({
+      where: { ...where, isDeleted: false },
+    });
 
     if (!user) throw new NotFoundException(`El usuario no existe`);
 
@@ -93,6 +95,21 @@ export class UserService {
     await this.prismaService.user.update({
       where: { id },
       data: { last_login: new Date() },
+    });
+
+    return true;
+  }
+
+  async remove(id: string) {
+    const user = await this.findOne(id);
+
+    if (user.isDeleted) {
+      throw new ConflictException('El usuario ya ha sido eliminado');
+    }
+
+    await this.prismaService.user.update({
+      where: { id },
+      data: { isDeleted: true, isActive: false },
     });
 
     return true;
