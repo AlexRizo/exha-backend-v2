@@ -8,8 +8,9 @@ import {
 import { CreateUserDto } from './dto/create-user.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { isUUID } from 'class-validator';
-import { Prisma } from '@prisma/client';
+import { Prisma, Role } from '@prisma/client';
 import { hashSync } from 'bcrypt';
+import { UserRoleDto } from './dto/user-role.dto';
 
 @Injectable()
 export class UserService {
@@ -38,8 +39,17 @@ export class UserService {
     }
   }
 
-  async findAll() {
-    const users = await this.prismaService.user.findMany();
+  async findAll({ admin, manager, applicant, student }: UserRoleDto) {
+    const rolesToFind: Role[] = [];
+
+    if (admin) rolesToFind.push(Role.admin);
+    if (manager) rolesToFind.push(Role.manager);
+    if (applicant) rolesToFind.push(Role.applicant);
+    if (student) rolesToFind.push(Role.student);
+
+    const users = await this.prismaService.user.findMany({
+      where: { role: rolesToFind.length ? { in: rolesToFind } : undefined },
+    });
 
     if (!users || !users.length) {
       throw new NotFoundException('No se encontraron usuarios');

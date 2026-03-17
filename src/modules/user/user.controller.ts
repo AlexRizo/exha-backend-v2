@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Query } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { Auth } from '../auth/decorators/auth.decorator';
+import { UserRoleDto } from './dto/user-role.dto';
 
 @Controller('user')
 export class UserController {
@@ -15,8 +16,8 @@ export class UserController {
 
   @Auth()
   @Get()
-  findAll() {
-    return this.userService.findAll();
+  findAll(@Query() query: UserRoleDto) {
+    return this.userService.findAll(query);
   }
 
   @Auth()
