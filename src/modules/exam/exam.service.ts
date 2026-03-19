@@ -41,7 +41,9 @@ export class ExamService {
   }
 
   async findAll() {
-    const exams = await this.prisma.exam.findMany();
+    const exams = await this.prisma.exam.findMany({
+      where: { isActive: true },
+    });
 
     if (!exams || !exams.length) {
       throw new NotFoundException('No se encontraron examenes');
@@ -54,17 +56,22 @@ export class ExamService {
     const where = isUUID(term) ? { id: term } : { code: term };
 
     const exam = await this.prisma.exam.findUnique({
-      where,
+      where: {
+        ...where,
+        isActive: true,
+      },
     });
 
     if (!exam) {
-      throw new NotFoundException('No se encontro el examen');
+      throw new NotFoundException('No se encontró el examen');
     }
 
     return exam;
   }
 
   async findExamTopics(examId: string) {
+    await this.findOne(examId);
+
     return this.topicService.findManyByExam(examId);
   }
 
