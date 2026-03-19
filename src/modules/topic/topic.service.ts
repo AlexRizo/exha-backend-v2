@@ -8,8 +8,6 @@ import {
 import { PrismaService } from '../prisma/prisma.service';
 import { isUUID } from 'class-validator';
 import { CreateTopicDto } from './dto/create-topic.dto';
-import { nanoid } from 'nanoid';
-import { normalizeString } from 'src/common/normalizeString';
 import { ExamService } from '../exam/exam.service';
 
 @Injectable()
@@ -55,11 +53,10 @@ export class TopicService {
     return topics;
   }
 
-  async create(topicDto: CreateTopicDto) {
-    await this.examService.findOne(topicDto.examId);
+  async create(examId: string, topicDto: CreateTopicDto) {
+    const exam = await this.examService.findOne(examId);
 
-    const code = nanoid(6);
-    const topicCode = `${normalizeString(topicDto.title).toUpperCase()}-${code}`;
+    const topicCode = `${exam.code}-${topicDto.code}`;
 
     const topicExist = await this.prismaService.topic.findUnique({
       where: { code: topicCode },
@@ -71,6 +68,7 @@ export class TopicService {
       data: {
         ...topicDto,
         code: topicCode,
+        examId: examId,
       },
     });
 

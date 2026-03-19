@@ -1,4 +1,10 @@
-import { IsInt, IsNotEmpty, IsNumber, IsString, IsUUID } from 'class-validator';
+import {
+  IsInt,
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+  Matches,
+} from 'class-validator';
 
 export class CreateTopicDto {
   @IsString()
@@ -9,6 +15,10 @@ export class CreateTopicDto {
   @IsInt()
   order: number;
 
-  @IsUUID()
-  examId: string;
+  @IsString()
+  @IsNotEmpty()
+  @Matches(/^[a-zA-Z0-9-]+$/, {
+    message: 'El código solo puede contener letras, números y guiones',
+  })
+  code: string;
 }
