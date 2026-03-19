@@ -4,6 +4,7 @@ import {
   Get,
   Param,
   ParseUUIDPipe,
+  Patch,
   Post,
 } from '@nestjs/common';
 import { ExamService } from './exam.service';
@@ -34,7 +35,13 @@ export class ExamController {
 
   @AllowedRole(Role.admin)
   @Post()
-  createExam(@Body() createExamDto: CreateExamDto) {
-    return this.examService.createExam(createExamDto);
+  create(@Body() createExamDto: CreateExamDto) {
+    return this.examService.create(createExamDto);
+  }
+
+  @AllowedRole(Role.admin)
+  @Patch(':id/delete')
+  remove(@Param('id', ParseUUIDPipe) id: string) {
+    return this.examService.remove(id);
   }
 }

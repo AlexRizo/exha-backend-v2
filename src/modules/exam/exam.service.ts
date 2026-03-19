@@ -16,7 +16,7 @@ export class ExamService {
     private readonly topicService: TopicService,
   ) {}
 
-  async createExam(createExamDto: CreateExamDto) {
+  async create(createExamDto: CreateExamDto) {
     const code = nanoid(6);
     const examCode = `EXHA-${code}`;
 
@@ -66,5 +66,18 @@ export class ExamService {
 
   async findExamTopics(examId: string) {
     return this.topicService.findManyByExam(examId);
+  }
+
+  async remove(id: string) {
+    await this.findOne(id);
+
+    await this.prisma.exam.update({
+      where: { id },
+      data: {
+        isActive: false,
+      },
+    });
+
+    return true;
   }
 }
