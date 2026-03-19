@@ -36,6 +36,13 @@ export class ExamService {
   async findAll() {
     const exams = await this.prisma.exam.findMany({
       where: { isActive: true },
+      include: {
+        _count: {
+          select: {
+            topics: true,
+          },
+        },
+      },
     });
 
     if (!exams || !exams.length) {
