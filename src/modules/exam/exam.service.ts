@@ -5,7 +5,6 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateExamDto } from './dto/create-exam.dto';
-import { nanoid } from 'nanoid';
 import { isUUID } from 'class-validator';
 import { TopicService } from '../topic/topic.service';
 
@@ -17,24 +16,18 @@ export class ExamService {
   ) {}
 
   async create(createExamDto: CreateExamDto) {
-    const code = nanoid(6);
-    const examCode = `EXHA-${code}`;
-
     const examExists = await this.prisma.exam.findUnique({
       where: {
-        code: examCode,
+        code: createExamDto.code,
       },
     });
 
     if (examExists) {
-      throw new ConflictException('El examen ya existe');
+      throw new ConflictException('El código del examen ya existe');
     }
 
     const exam = await this.prisma.exam.create({
-      data: {
-        ...createExamDto,
-        code: examCode,
-      },
+      data: createExamDto,
     });
 
     return exam;
