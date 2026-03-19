@@ -11,7 +11,7 @@ export class CreateExamDto {
 
   @IsString()
   @IsNotEmpty()
-  @Matches(/^[A-Z]{4}-\d{6}$/, {
+  @Matches(/^[a-zA-Z0-9-]+$/, {
     message: 'El código solo puede contener letras, números y guiones',
   })
   code: string;
