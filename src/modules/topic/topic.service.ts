@@ -77,6 +77,13 @@ export class TopicService {
         code: topicCode,
         examId: examId,
       },
+      include: {
+        _count: {
+          select: {
+            questions: true,
+          },
+        },
+      },
     });
 
     return topic;
