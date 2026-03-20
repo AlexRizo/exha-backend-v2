@@ -28,11 +28,6 @@ export class ExamController {
     return this.examService.findAll();
   }
 
-  @Get(':examId/topics')
-  findExamTopics(@Param('examId', ParseUUIDPipe) examId: string) {
-    return this.examService.findExamTopics(examId);
-  }
-
   @AllowedRole(Role.admin)
   @Post()
   create(@Body() createExamDto: CreateExamDto) {
