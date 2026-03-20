@@ -41,7 +41,7 @@ export class TopicService {
     return topic;
   }
 
-  async findManyByExam(examId: string) {
+  async findTopicsByExam(examId: string) {
     const topics = await this.prismaService.topic.findMany({
       where: { examId },
       include: {

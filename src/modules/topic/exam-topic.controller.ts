@@ -24,8 +24,9 @@ export class ExamTopicController {
     return this.topicService.create(examId, createTopicDto);
   }
 
+  @Auth()
   @Get()
-  findManyByExam(@Param('examId', ParseUUIDPipe) examId: string) {
-    return this.topicService.findManyByExam(examId);
+  findTopicsByExam(@Param('examId', ParseUUIDPipe) examId: string) {
+    return this.topicService.findTopicsByExam(examId);
   }
 }
