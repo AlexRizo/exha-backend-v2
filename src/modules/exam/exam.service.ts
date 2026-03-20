@@ -72,7 +72,7 @@ export class ExamService {
   async findExamTopics(examId: string) {
     await this.findOne(examId);
 
-    return this.topicService.findManyByExam(examId);
+    return this.topicService.findTopicsByExam(examId);
   }
 
   async remove(id: string) {
