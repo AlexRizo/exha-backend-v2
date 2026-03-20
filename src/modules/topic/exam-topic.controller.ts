@@ -1,4 +1,11 @@
-import { Body, Controller, Param, ParseUUIDPipe, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseUUIDPipe,
+  Post,
+} from '@nestjs/common';
 import { TopicService } from './topic.service';
 import { Role } from '@prisma/client';
 import { CreateTopicDto } from './dto/create-topic.dto';
@@ -15,5 +22,10 @@ export class ExamTopicController {
     @Body() createTopicDto: CreateTopicDto,
   ) {
     return this.topicService.create(examId, createTopicDto);
+  }
+
+  @Get()
+  findManyByExam(@Param('examId', ParseUUIDPipe) examId: string) {
+    return this.topicService.findManyByExam(examId);
   }
 }

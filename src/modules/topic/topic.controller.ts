@@ -1,4 +1,4 @@
-import { Controller, Get, Param, ParseUUIDPipe } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { TopicService } from './topic.service';
 import { Auth } from '../auth/decorators/auth.decorator';
 
@@ -15,10 +15,5 @@ export class TopicController {
   @Get(':term')
   findOne(@Param('term') term: string) {
     return this.topicService.findOne(term);
-  }
-
-  @Get('exam/:examId')
-  findManyByExam(@Param('examId', ParseUUIDPipe) examId: string) {
-    return this.topicService.findManyByExam(examId);
   }
 }
