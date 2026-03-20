@@ -9,6 +9,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { isUUID } from 'class-validator';
 import { CreateTopicDto } from './dto/create-topic.dto';
 import { ExamService } from '../exam/exam.service';
+import { UpdateTopicDto } from './dto/update-topic.dto';
 
 @Injectable()
 export class TopicService {
@@ -87,5 +88,23 @@ export class TopicService {
     });
 
     return topic;
+  }
+
+  async update(id: string, updateTopicDto: UpdateTopicDto) {
+    await this.findOne(id);
+
+    const topicUpdated = await this.prismaService.topic.update({
+      where: { id },
+      data: updateTopicDto,
+      include: {
+        _count: {
+          select: {
+            questions: true,
+          },
+        },
+      },
+    });
+
+    return topicUpdated;
   }
 }

@@ -1,6 +1,14 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseUUIDPipe,
+  Patch,
+} from '@nestjs/common';
 import { TopicService } from './topic.service';
 import { Auth } from '../auth/decorators/auth.decorator';
+import { UpdateTopicDto } from './dto/update-topic.dto';
 
 @Auth()
 @Controller('topic')
@@ -15,5 +23,13 @@ export class TopicController {
   @Get(':term')
   findOne(@Param('term') term: string) {
     return this.topicService.findOne(term);
+  }
+
+  @Patch(':id')
+  update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updateTopicDto: UpdateTopicDto,
+  ) {
+    return this.topicService.update(id, updateTopicDto);
   }
 }
