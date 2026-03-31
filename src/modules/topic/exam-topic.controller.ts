@@ -25,6 +25,12 @@ export class ExamTopicController {
   }
 
   @Auth()
+  @Get(':term')
+  findExamTopic(@Param('term') term: string) {
+    return this.topicService.findOne(term);
+  }
+
+  @Auth()
   @Get()
   findTopicsByExam(@Param('examId', ParseUUIDPipe) examId: string) {
     return this.topicService.findTopicsByExam(examId);

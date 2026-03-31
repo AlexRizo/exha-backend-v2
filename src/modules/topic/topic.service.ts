@@ -21,7 +21,11 @@ export class TopicService {
   ) {}
 
   async findAll() {
-    const topics = await this.prismaService.topic.findMany();
+    const topics = await this.prismaService.topic.findMany({
+      where: {
+        isActive: true,
+      },
+    });
 
     if (!topics || !topics.length) {
       throw new NotFoundException('No se encontraron tópicos');
@@ -37,6 +41,9 @@ export class TopicService {
       where: {
         ...where,
         isActive: true,
+      },
+      include: {
+        exam: true,
       },
     });
 
