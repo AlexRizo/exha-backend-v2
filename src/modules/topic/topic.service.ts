@@ -33,7 +33,12 @@ export class TopicService {
   async findOne(term: string) {
     const where = isUUID(term) ? { id: term } : { code: term };
 
-    const topic = await this.prismaService.topic.findUnique({ where });
+    const topic = await this.prismaService.topic.findUnique({
+      where: {
+        ...where,
+        isActive: true,
+      },
+    });
 
     if (!topic) {
       throw new NotFoundException('No se encontró el tópico');
@@ -44,7 +49,10 @@ export class TopicService {
 
   async findTopicsByExam(examId: string) {
     const topics = await this.prismaService.topic.findMany({
-      where: { examId },
+      where: {
+        examId,
+        isActive: true,
+      },
       include: {
         _count: {
           select: {
@@ -106,5 +114,18 @@ export class TopicService {
     });
 
     return topicUpdated;
+  }
+
+  async remove(id: string) {
+    await this.findOne(id);
+
+    const topicDeleted = await this.prismaService.topic.update({
+      where: { id },
+      data: {
+        isActive: false,
+      },
+    });
+
+    return topicDeleted;
   }
 }
