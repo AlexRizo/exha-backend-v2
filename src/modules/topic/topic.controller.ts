@@ -33,7 +33,7 @@ export class TopicController {
     return this.topicService.update(id, updateTopicDto);
   }
 
-  @Patch(':id')
+  @Patch(':id/delete')
   remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.topicService.remove(id);
   }
